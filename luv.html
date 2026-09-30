@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Do You Love Me? 💖</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      padding: 2.5rem 2rem;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(255, 105, 180, 0.25);
+      text-align: center;
+      max-width: 420px;
+      width: 90%;
+      z-index: 10;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .gif-box img {
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 20px;
+      margin-bottom: 0.8rem;
+    }
+
+    h1 {
+      color: #ff477e;
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .status-text {
+      color: #666;
+      font-size: 0.95rem;
+      font-weight: 600;
+      min-height: 2.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      width: 100%;
+      min-height: 100px;
+      position: relative;
+    }
+
+    .btn {
+      border: none;
+      padding: 12px 26px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      outline: none;
+      position: relative;
+    }
+
+    .btn-yes {
+      background: linear-gradient(45deg, #ff477e, #ff70a6);
+      color: white;
+      box-shadow: 0 5px 15px rgba(255, 71, 126, 0.4);
+      z-index: 5;
+    }
+
+    .btn-no {
+      background: #e0e0e0;
+      color: #666;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      z-index: 4;
+    }
+
+    /* Screen Sukses */
+    .success-screen {
+      display: none;
+      animation: popIn 0.5s ease forwards;
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Animasi Hati Latar Belakang */
+    .heart {
+      position: absolute;
+      font-size: 1.5rem;
+      animation: floatUp 5s linear infinite;
+      bottom: -10vh;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="mainContainer">
+    <!-- Screen Pertanyaan -->
+    <div id="questionScreen">
+      <div class="gif-box">
+        <img id="mainGif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3pjdWlsb2FvazE3ZzN0bHNudGF4MmoxdTB2bGF1MXA0MTRrdXdhbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L3X9GvEGEPfIk/giphy.gif" alt="Cute Cat">
+      </div>
+      
+      <h1>Do you love me? 🥺</h1>
+      <p class="status-text" id="statusText">Coba tangkap tombol YES-nya kalau cinta! 😜</p>
+      
+      <div class="btn-group" id="btnGroup">
+        <button class="btn btn-yes" id="yesBtn" 
+                onmouseover="handleYesHover()" 
+                ontouchstart="handleYesHover()" 
+                onclick="handleYesClick()">YES! 🥰</button>
+        
+        <button class="btn btn-no" id="noBtn" 
+                onmouseover="dodgeNo()" 
+                ontouchstart="dodgeNo()" 
+                onclick="dodgeNo()">NO 😜</button>
+      </div>
+    </div>
+
+    <!-- Screen Sukses -->
+    <div id="successScreen" class="success-screen">
+      <div class="gif-box">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmNwb24yc3psNDlkaXpsb3RybXNwbjE0Ymg2N3R1ZHRkMnNndHRqMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MDJ9IbxxvDUQM/giphy.gif" alt="Happy Cat">
+      </div>
+      <h1>YAAAAY! AKHIRNYA DAPAT! 💖✨</h1>
+      <p style="color: #555; font-size: 0.95rem; line-height: 1.6; margin-top: 10px;">
+        Makasih ya udah mau berjuang nangkep tombol YES-nya 😜<br>
+        I love you so much! 🥰❤️
+      </p>
+    </div>
+  </div>
+
+  <script>
+    let yesDodgeCount = 0;
+    const maxYesDodges = 5; // Berapa kali YES mengelak sebelum bisa diklik
+    let yesScale = 1;
+
+    const teases = [
+      "Eits, ga gampang dong! 😜",
+      "Jual mahal dikit ah~ 🙈",
+      "Dikejar dulu baru dapet! 🏃‍♂️💨",
+      "Dikit lagi dapet tuh! 🥺",
+      "Oke oke, sekarang sudah siap ditangkap! 💖"
+    ];
+
+    function getRandomPosition(element) {
+      const container = document.getElementById('mainContainer');
+      const containerRect = container.getBoundingClientRect();
+      const elemRect = element.getBoundingClientRect();
+
+      const maxX = containerRect.width - elemRect.width - 40;
+      const maxY = containerRect.height - elemRect.height - 60;
+
+      const randomX = (Math.random() * maxX) - (maxX / 2);
+      const randomY = (Math.random() * maxY) - (maxY / 2);
+
+      return { x: randomX, y: randomY };
+    }
+
+    function handleYesHover() {
+      if (yesDodgeCount < maxYesDodges) {
+        const yesBtn = document.getElementById('yesBtn');
+        const statusText = document.getElementById('statusText');
+
+        // Pindahkan tombol YES ke posisi acak
+        const pos = getRandomPosition(yesBtn);
+        yesBtn.style.position = 'absolute';
+        yesBtn.style.left = `calc(50% + ${pos.x}px)`;
+        yesBtn.style.top = `calc(50% + ${pos.y}px)`;
+
+        // Perbesar tombol YES setiap kali mengelak
+        yesScale += 0.15;
+        yesBtn.style.transform = `scale(${yesScale})`;
+
+        // Update teks godaan
+        statusText.innerText = teases[yesDodgeCount];
+        yesDodgeCount++;
+
+        // Jika sudah mencapai batas mengelak, kunci di tempat agar bisa diklik
+        if (yesDodgeCount === maxYesDodges) {
+          setTimeout(() => {
+            yesBtn.style.position = 'relative';
+            yesBtn.style.left = '0';
+            yesBtn.style.top = '0';
+            yesBtn.innerText = "KLIK AKU SEKARANG! 🥰💖";
+          }, 200);
+        }
+      }
+    }
+
+    function handleYesClick() {
+      // Tombol YES hanya bisa diklik setelah selesai mengelak
+      if (yesDodgeCount >= maxYesDodges) {
+        document.getElementById('questionScreen').style.display = 'none';
+        document.getElementById('successScreen').style.display = 'block';
+
+        // Efek ledakan hati
+        for (let i = 0; i < 35; i++) {
+          setTimeout(createHeart, i * 40);
+        }
+      } else {
+        // Kalau kebetulan kepencet pas lagi mengelak
+        handleYesHover();
+      }
+    }
+
+    function dodgeNo() {
+      const noBtn = document.getElementById('noBtn');
+      const statusText = document.getElementById('statusText');
+
+      const pos = getRandomPosition(noBtn);
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = `calc(50% + ${pos.x}px)`;
+      noBtn.style.top = `calc(50% + ${pos.y}px)`;
+
+      statusText.innerText = "Kok malah incer tombol NO sih?! 😭 Incet YES dong!";
+    }
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.innerHTML = ['💖', '💕', '💗', '❤️️', '✨'][Math.floor(Math.random() * 5)];
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+      heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 5000);
+    }
+
+    setInterval(createHeart, 300);
+  </script>
+</body>
+</html>
